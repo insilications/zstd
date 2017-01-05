@@ -4,25 +4,45 @@
 #
 Name     : zstd
 Version  : 1.1.2
-Release  : 2
+Release  : 3
 URL      : https://github.com/facebook/zstd/archive/v1.1.2.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.1.2.tar.gz
 Summary  : fast lossless compression algorithm library
 Group    : Development/Tools
 License  : BSD-3-Clause
+Requires: zstd-bin
+Requires: zstd-lib
 BuildRequires : cmake
 
 %description
 __Zstandard__, or `zstd` as short version, is a fast lossless compression algorithm,
 targeting real-time compression scenarios at zlib-level and better compression ratios.
 
+%package bin
+Summary: bin components for the zstd package.
+Group: Binaries
+
+%description bin
+bin components for the zstd package.
+
+
 %package dev
 Summary: dev components for the zstd package.
 Group: Development
+Requires: zstd-lib
+Requires: zstd-bin
 Provides: zstd-devel
 
 %description dev
 dev components for the zstd package.
+
+
+%package lib
+Summary: lib components for the zstd package.
+Group: Libraries
+
+%description lib
+lib components for the zstd package.
 
 
 %prep
@@ -39,14 +59,14 @@ make V=1  %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 %make_install
+## make_install_append content
+mkdir -p %{buildroot}/usr/lib64
+cp lib/libzstd.so.1.1.2  %{buildroot}/usr/lib64
+mv %{buildroot}/usr/local/bin %{buildroot}/usr
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)
-/usr/local/bin/unzstd
-/usr/local/bin/zstd
-/usr/local/bin/zstdcat
-/usr/local/bin/zstdgrep
-/usr/local/bin/zstdless
 /usr/local/lib/libzstd.so
 /usr/local/lib/libzstd.so.1
 /usr/local/lib/libzstd.so.1.1.2
@@ -55,9 +75,21 @@ rm -rf %{buildroot}
 /usr/local/share/man/man1/zstd.1
 /usr/local/share/man/man1/zstdcat.1
 
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/unzstd
+/usr/bin/zstd
+/usr/bin/zstdcat
+/usr/bin/zstdgrep
+/usr/bin/zstdless
+
 %files dev
 %defattr(-,root,root,-)
 /usr/local/include/zbuff.h
 /usr/local/include/zdict.h
 /usr/local/include/zstd.h
 /usr/local/include/zstd_errors.h
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libzstd.so.1.1.2
