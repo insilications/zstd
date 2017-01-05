@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.1.2
-Release  : 1
+Release  : 2
 URL      : https://github.com/facebook/zstd/archive/v1.1.2.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.1.2.tar.gz
 Summary  : fast lossless compression algorithm library
