@@ -86,6 +86,8 @@ libzstd.so.1:ZSTD_decompress_usingDict
 libzstd.so.1:ZSTD_endStream
 libzstd.so.1:ZSTD_estimateCCtxSize
 libzstd.so.1:ZSTD_estimateDCtxSize
+libzstd.so.1:ZSTD_findDecompressedSize
+libzstd.so.1:ZSTD_findFrameCompressedSize
 libzstd.so.1:ZSTD_flushStream
 libzstd.so.1:ZSTD_freeCCtx
 libzstd.so.1:ZSTD_freeCDict
@@ -102,6 +104,7 @@ libzstd.so.1:ZSTD_getDictID_fromFrame
 libzstd.so.1:ZSTD_getErrorCode
 libzstd.so.1:ZSTD_getErrorName
 libzstd.so.1:ZSTD_getErrorString
+libzstd.so.1:ZSTD_getFrameContentSize
 libzstd.so.1:ZSTD_getFrameParams
 libzstd.so.1:ZSTD_getParams
 libzstd.so.1:ZSTD_initCStream
