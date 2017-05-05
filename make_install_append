@@ -1,3 +1,3 @@
 mkdir -p %{buildroot}/usr/lib64
-cp lib/libzstd.so.1.1.*  %{buildroot}/usr/lib64
+cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64
 mv %{buildroot}/usr/local/bin %{buildroot}/usr

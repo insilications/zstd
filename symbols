@@ -48,6 +48,7 @@ libzstd.so.1:ZSTD_compress
 libzstd.so.1:ZSTD_compressBegin
 libzstd.so.1:ZSTD_compressBegin_advanced
 libzstd.so.1:ZSTD_compressBegin_usingCDict
+libzstd.so.1:ZSTD_compressBegin_usingCDict_advanced
 libzstd.so.1:ZSTD_compressBegin_usingDict
 libzstd.so.1:ZSTD_compressBlock
 libzstd.so.1:ZSTD_compressBound
@@ -57,6 +58,7 @@ libzstd.so.1:ZSTD_compressEnd
 libzstd.so.1:ZSTD_compressStream
 libzstd.so.1:ZSTD_compress_advanced
 libzstd.so.1:ZSTD_compress_usingCDict
+libzstd.so.1:ZSTD_compress_usingCDict_advanced
 libzstd.so.1:ZSTD_compress_usingDict
 libzstd.so.1:ZSTD_copyCCtx
 libzstd.so.1:ZSTD_copyDCtx
@@ -111,6 +113,7 @@ libzstd.so.1:ZSTD_initCStream
 libzstd.so.1:ZSTD_initCStream_advanced
 libzstd.so.1:ZSTD_initCStream_srcSize
 libzstd.so.1:ZSTD_initCStream_usingCDict
+libzstd.so.1:ZSTD_initCStream_usingCDict_advanced
 libzstd.so.1:ZSTD_initCStream_usingDict
 libzstd.so.1:ZSTD_initDStream
 libzstd.so.1:ZSTD_initDStream_usingDDict
