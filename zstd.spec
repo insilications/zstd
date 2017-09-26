@@ -4,15 +4,19 @@
 #
 Name     : zstd
 Version  : 1.3.0
-Release  : 8
+Release  : 9
 URL      : https://github.com/facebook/zstd/archive/v1.3.0.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.3.0.tar.gz
 Summary  : fast lossless compression algorithm library
 Group    : Development/Tools
-License  : BSD-3-Clause
+License  : BSD-3-Clause GPL-2.0
 Requires: zstd-bin
 Requires: zstd-lib
+Requires: zstd-doc
 BuildRequires : cmake
+BuildRequires : meson
+BuildRequires : ninja
+BuildRequires : python3
 BuildRequires : zlib-dev
 
 %description
@@ -37,6 +41,14 @@ Provides: zstd-devel
 dev components for the zstd package.
 
 
+%package doc
+Summary: doc components for the zstd package.
+Group: Documentation
+
+%description doc
+doc components for the zstd package.
+
+
 %package lib
 Summary: lib components for the zstd package.
 Group: Libraries
@@ -53,32 +65,25 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1499281796
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
+export SOURCE_DATE_EPOCH=1506453754
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 make V=1
 
 %install
-export SOURCE_DATE_EPOCH=1499281796
+export SOURCE_DATE_EPOCH=1506453754
 rm -rf %{buildroot}
 %make_install
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib64
 cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64
-mv %{buildroot}/usr/local/bin %{buildroot}/usr
+mv %{buildroot}/usr/local/* %{buildroot}/usr
 ## make_install_append end
 
 %files
 %defattr(-,root,root,-)
-/usr/local/lib/libzstd.so
-/usr/local/lib/libzstd.so.1
-/usr/local/lib/libzstd.so.1.3.0
-/usr/local/lib/pkgconfig/libzstd.pc
-/usr/local/share/man/man1/unzstd.1
-/usr/local/share/man/man1/zstd.1
-/usr/local/share/man/man1/zstdcat.1
 
 %files bin
 %defattr(-,root,root,-)
@@ -91,11 +96,16 @@ mv %{buildroot}/usr/local/bin %{buildroot}/usr
 
 %files dev
 %defattr(-,root,root,-)
-/usr/local/include/zbuff.h
-/usr/local/include/zdict.h
-/usr/local/include/zstd.h
-/usr/local/include/zstd_errors.h
+/usr/include/*.h
+/usr/lib/libzstd.so
+/usr/lib/pkgconfig/libzstd.pc
+
+%files doc
+%defattr(-,root,root,-)
+%doc /usr/share/man/man1/*
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib/libzstd.so.1
+/usr/lib/libzstd.so.1.3.0
 /usr/lib64/libzstd.so.1.3.0
