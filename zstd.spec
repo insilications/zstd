@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.3.0
-Release  : 9
+Release  : 10
 URL      : https://github.com/facebook/zstd/archive/v1.3.0.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.3.0.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -65,7 +65,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506453754
+export SOURCE_DATE_EPOCH=1506454281
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -73,13 +73,14 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 make V=1
 
 %install
-export SOURCE_DATE_EPOCH=1506453754
+export SOURCE_DATE_EPOCH=1506454281
 rm -rf %{buildroot}
 %make_install
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib64
 cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64
 mv %{buildroot}/usr/local/* %{buildroot}/usr
+mv %{buildroot}/usr/lib/pkgconfig %{buildroot}/usr/lib64
 ## make_install_append end
 
 %files
@@ -98,7 +99,7 @@ mv %{buildroot}/usr/local/* %{buildroot}/usr
 %defattr(-,root,root,-)
 /usr/include/*.h
 /usr/lib/libzstd.so
-/usr/lib/pkgconfig/libzstd.pc
+/usr/lib64/pkgconfig/libzstd.pc
 
 %files doc
 %defattr(-,root,root,-)
