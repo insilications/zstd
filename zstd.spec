@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.3.2
-Release  : 16
+Release  : 17
 URL      : https://github.com/facebook/zstd/archive/v1.3.2.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.3.2.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -79,8 +79,8 @@ rm -rf %{buildroot}
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib64
 cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64
-ln -s libzstd.so.1.3.1   %{buildroot}/usr/lib64/libzstd.so
-ln -s libzstd.so.1.3.1   %{buildroot}/usr/lib64/libzstd.so.1
+ln -s libzstd.so.1.3.2   %{buildroot}/usr/lib64/libzstd.so
+ln -s libzstd.so.1.3.2   %{buildroot}/usr/lib64/libzstd.so.1
 mv %{buildroot}/usr/local/* %{buildroot}/usr
 mv %{buildroot}/usr/lib/pkgconfig %{buildroot}/usr/lib64
 rm  %{buildroot}/usr/lib/*so*
