@@ -44,6 +44,9 @@ libzstd.so.1:ZSTDMT_resetCStream
 libzstd.so.1:ZSTDMT_setMTCtxParameter
 libzstd.so.1:ZSTDMT_sizeof_CCtx
 libzstd.so.1:ZSTD_CCtxParam_setParameter
+libzstd.so.1:ZSTD_CCtxParams_init
+libzstd.so.1:ZSTD_CCtxParams_init_advanced
+libzstd.so.1:ZSTD_CCtxParams_reset
 libzstd.so.1:ZSTD_CCtx_loadDictionary
 libzstd.so.1:ZSTD_CCtx_loadDictionary_advanced
 libzstd.so.1:ZSTD_CCtx_loadDictionary_byReference
@@ -56,6 +59,12 @@ libzstd.so.1:ZSTD_CCtx_setParametersUsingCCtxParams
 libzstd.so.1:ZSTD_CCtx_setPledgedSrcSize
 libzstd.so.1:ZSTD_CStreamInSize
 libzstd.so.1:ZSTD_CStreamOutSize
+libzstd.so.1:ZSTD_DCtx_loadDictionary
+libzstd.so.1:ZSTD_DCtx_loadDictionary_advanced
+libzstd.so.1:ZSTD_DCtx_loadDictionary_byReference
+libzstd.so.1:ZSTD_DCtx_refDDict
+libzstd.so.1:ZSTD_DCtx_refPrefix
+libzstd.so.1:ZSTD_DCtx_refPrefix_advanced
 libzstd.so.1:ZSTD_DCtx_reset
 libzstd.so.1:ZSTD_DCtx_setFormat
 libzstd.so.1:ZSTD_DCtx_setMaxWindowSize
@@ -147,8 +156,6 @@ libzstd.so.1:ZSTD_getErrorString
 libzstd.so.1:ZSTD_getFrameContentSize
 libzstd.so.1:ZSTD_getFrameHeader
 libzstd.so.1:ZSTD_getParams
-libzstd.so.1:ZSTD_initCCtxParams
-libzstd.so.1:ZSTD_initCCtxParams_advanced
 libzstd.so.1:ZSTD_initCStream
 libzstd.so.1:ZSTD_initCStream_advanced
 libzstd.so.1:ZSTD_initCStream_srcSize
@@ -170,7 +177,6 @@ libzstd.so.1:ZSTD_isFrame
 libzstd.so.1:ZSTD_maxCLevel
 libzstd.so.1:ZSTD_nextInputType
 libzstd.so.1:ZSTD_nextSrcSizeToDecompress
-libzstd.so.1:ZSTD_resetCCtxParams
 libzstd.so.1:ZSTD_resetCStream
 libzstd.so.1:ZSTD_resetDStream
 libzstd.so.1:ZSTD_setDStreamParameter
