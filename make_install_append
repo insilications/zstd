@@ -5,3 +5,10 @@ ln -s libzstd.so.1.3.4   %{buildroot}/usr/lib64/libzstd.so.1
 mv %{buildroot}/usr/local/* %{buildroot}/usr
 mv %{buildroot}/usr/lib/pkgconfig %{buildroot}/usr/lib64
 rm  %{buildroot}/usr/lib/*so*
+pushd ../buildavx2/
+mkdir -p %{buildroot}/usr/lib64/haswell
+export CFLAGS="$CFLAGS -O3 -march=haswell "
+export CXXFLAGS="$CXXFLAGS -O3 -march=haswell "
+make 
+cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64/haswell
+popd
