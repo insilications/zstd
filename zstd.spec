@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.3.5
-Release  : 32
+Release  : 33
 URL      : https://github.com/facebook/zstd/archive/v1.3.5.tar.gz
 Source0  : https://github.com/facebook/zstd/archive/v1.3.5.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -84,7 +84,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1530714787
+export SOURCE_DATE_EPOCH=1530803107
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -95,7 +95,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -f
 make prefix=/usr
 
 %install
-export SOURCE_DATE_EPOCH=1530714787
+export SOURCE_DATE_EPOCH=1530803107
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/zstd
 cp LICENSE %{buildroot}/usr/share/doc/zstd/LICENSE
@@ -122,6 +122,7 @@ export CFLAGS="$CFLAGS -O3 -march=haswell "
 export CXXFLAGS="$CXXFLAGS -O3 -march=haswell "
 make
 cp lib/libzstd.so.1.*  %{buildroot}/usr/lib64/haswell
+ln -s libzstd.so.1.3.5   %{buildroot}/usr/lib64/haswell/libzstd.so.1
 popd
 ## make_install_append end
 
@@ -145,6 +146,7 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libzstd.so.1
 /usr/lib64/haswell/libzstd.so.1.3.5
 /usr/lib64/libzstd.so.1
 /usr/lib64/libzstd.so.1.3.5
