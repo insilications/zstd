@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.3.7
-Release  : 37
+Release  : 38
 URL      : https://github.com/facebook/zstd/releases/download/v1.3.7/zstd-1.3.7.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.3.7/zstd-1.3.7.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -82,7 +82,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542826400
+export SOURCE_DATE_EPOCH=1542843579
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -92,14 +92,8 @@ export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-m
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 make PREFIX=%{_prefix} LIBDIR=%{_libdir}
 
-pushd ../buildavx2
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-make PREFIX=%{_prefix} LIBDIR=%{_libdir}
-
 %install
-export SOURCE_DATE_EPOCH=1542826400
+export SOURCE_DATE_EPOCH=1542843579
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp COPYING %{buildroot}/usr/share/package-licenses/zstd/COPYING
