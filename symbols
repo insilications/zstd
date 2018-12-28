@@ -43,6 +43,7 @@ libzstd.so.1:ZSTDMT_getMTCtxParameter
 libzstd.so.1:ZSTDMT_initCStream
 libzstd.so.1:ZSTDMT_initCStream_advanced
 libzstd.so.1:ZSTDMT_initCStream_usingCDict
+libzstd.so.1:ZSTDMT_nextInputSizeHint
 libzstd.so.1:ZSTDMT_resetCStream
 libzstd.so.1:ZSTDMT_setMTCtxParameter
 libzstd.so.1:ZSTDMT_sizeof_CCtx
@@ -59,7 +60,6 @@ libzstd.so.1:ZSTD_CCtx_refCDict
 libzstd.so.1:ZSTD_CCtx_refPrefix
 libzstd.so.1:ZSTD_CCtx_refPrefix_advanced
 libzstd.so.1:ZSTD_CCtx_reset
-libzstd.so.1:ZSTD_CCtx_resetParameters
 libzstd.so.1:ZSTD_CCtx_setParameter
 libzstd.so.1:ZSTD_CCtx_setParametersUsingCCtxParams
 libzstd.so.1:ZSTD_CCtx_setPledgedSrcSize
@@ -74,11 +74,14 @@ libzstd.so.1:ZSTD_DCtx_refPrefix_advanced
 libzstd.so.1:ZSTD_DCtx_reset
 libzstd.so.1:ZSTD_DCtx_setFormat
 libzstd.so.1:ZSTD_DCtx_setMaxWindowSize
+libzstd.so.1:ZSTD_DCtx_setParameter
 libzstd.so.1:ZSTD_DStreamInSize
 libzstd.so.1:ZSTD_DStreamOutSize
 libzstd.so.1:ZSTD_adjustCParams
+libzstd.so.1:ZSTD_cParam_getBounds
 libzstd.so.1:ZSTD_checkCParams
 libzstd.so.1:ZSTD_compress
+libzstd.so.1:ZSTD_compress2
 libzstd.so.1:ZSTD_compressBegin
 libzstd.so.1:ZSTD_compressBegin_advanced
 libzstd.so.1:ZSTD_compressBegin_usingCDict
@@ -90,9 +93,9 @@ libzstd.so.1:ZSTD_compressCCtx
 libzstd.so.1:ZSTD_compressContinue
 libzstd.so.1:ZSTD_compressEnd
 libzstd.so.1:ZSTD_compressStream
+libzstd.so.1:ZSTD_compressStream2
+libzstd.so.1:ZSTD_compressStream2_simpleArgs
 libzstd.so.1:ZSTD_compress_advanced
-libzstd.so.1:ZSTD_compress_generic
-libzstd.so.1:ZSTD_compress_generic_simpleArgs
 libzstd.so.1:ZSTD_compress_usingCDict
 libzstd.so.1:ZSTD_compress_usingCDict_advanced
 libzstd.so.1:ZSTD_compress_usingDict
@@ -113,6 +116,7 @@ libzstd.so.1:ZSTD_createDDict_advanced
 libzstd.so.1:ZSTD_createDDict_byReference
 libzstd.so.1:ZSTD_createDStream
 libzstd.so.1:ZSTD_createDStream_advanced
+libzstd.so.1:ZSTD_dParam_getBounds
 libzstd.so.1:ZSTD_decodingBufferSize_min
 libzstd.so.1:ZSTD_decompress
 libzstd.so.1:ZSTD_decompressBegin
@@ -122,8 +126,7 @@ libzstd.so.1:ZSTD_decompressBlock
 libzstd.so.1:ZSTD_decompressContinue
 libzstd.so.1:ZSTD_decompressDCtx
 libzstd.so.1:ZSTD_decompressStream
-libzstd.so.1:ZSTD_decompress_generic
-libzstd.so.1:ZSTD_decompress_generic_simpleArgs
+libzstd.so.1:ZSTD_decompressStream_simpleArgs
 libzstd.so.1:ZSTD_decompress_usingDDict
 libzstd.so.1:ZSTD_decompress_usingDict
 libzstd.so.1:ZSTD_endStream
@@ -188,7 +191,6 @@ libzstd.so.1:ZSTD_nextInputType
 libzstd.so.1:ZSTD_nextSrcSizeToDecompress
 libzstd.so.1:ZSTD_resetCStream
 libzstd.so.1:ZSTD_resetDStream
-libzstd.so.1:ZSTD_setDStreamParameter
 libzstd.so.1:ZSTD_sizeof_CCtx
 libzstd.so.1:ZSTD_sizeof_CDict
 libzstd.so.1:ZSTD_sizeof_CStream
