@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.3.8
-Release  : 39
+Release  : 40
 URL      : https://github.com/facebook/zstd/releases/download/v1.3.8/zstd-1.3.8.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.3.8/zstd-1.3.8.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -22,7 +22,14 @@ BuildRequires : zlib-dev
 Patch1: multi-thread-default.patch
 
 %description
-<p align="center"><img src="https://raw.githubusercontent.com/facebook/zstd/dev/doc/images/zstd_logo86.png" alt="Zstandard"></p>
+# Parallel Zstandard (PZstandard)
+Parallel Zstandard is a Pigz-like tool for Zstandard.
+It provides Zstandard format compatible compression and decompression that is able to utilize multiple cores.
+It breaks the input up into equal sized chunks and compresses each chunk independently into a Zstandard frame.
+It then concatenates the frames together to produce the final compressed output.
+Pzstandard will write a 12 byte header for each frame that is a skippable frame in the Zstandard format, which tells PZstandard the size of the next compressed frame.
+PZstandard supports parallel decompression of files compressed with PZstandard.
+When decompressing files compressed with Zstandard, PZstandard does IO in one thread, and decompression in another.
 
 %package bin
 Summary: bin components for the zstd package.
@@ -40,6 +47,7 @@ Group: Development
 Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
+Requires: zstd = %{version}-%{release}
 
 %description dev
 dev components for the zstd package.
@@ -82,7 +90,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546023018
+export SOURCE_DATE_EPOCH=1550634636
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -100,7 +108,7 @@ make PREFIX=%{_prefix} LIBDIR=%{_libdir}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1546023018
+export SOURCE_DATE_EPOCH=1550634636
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp COPYING %{buildroot}/usr/share/package-licenses/zstd/COPYING
