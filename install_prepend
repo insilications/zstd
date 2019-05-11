@@ -1,0 +1,4 @@
+pushd build/meson
+cp ../../COPYING .
+cp ../../LICENSE .
+cp -a ../../contrib .

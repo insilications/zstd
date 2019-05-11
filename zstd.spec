@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.4.0
-Release  : 42
+Release  : 46
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.0/zstd-1.4.0.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.0/zstd-1.4.0.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -86,11 +86,14 @@ cp -a zstd-1.4.0 buildavx2
 popd
 
 %build
+## build_prepend content
+pushd build/meson
+## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1557584527
+export SOURCE_DATE_EPOCH=1557588946
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -106,38 +109,37 @@ export CFLAGS_USE="$CFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-co
 export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
-make PREFIX=%{_prefix} LIBDIR=%{_libdir}
-
-pushd ../buildavx2
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-make PREFIX=%{_prefix} LIBDIR=%{_libdir}
-popd
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain   builddir
+ninja -v -C builddir
+CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --prefix /usr --libdir=/usr/lib64/haswell --buildtype=plain   builddiravx2
+ninja -v -C builddiravx2
 
 %install
-export SOURCE_DATE_EPOCH=1557584527
-rm -rf %{buildroot}
+## install_prepend content
+pushd build/meson
+cp ../../COPYING .
+cp ../../LICENSE .
+cp -a ../../contrib .
+## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp COPYING %{buildroot}/usr/share/package-licenses/zstd/COPYING
 cp LICENSE %{buildroot}/usr/share/package-licenses/zstd/LICENSE
 cp contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/contrib_linux-kernel_COPYING
-pushd ../buildavx2/
-%make_install_avx2 PREFIX=%{_prefix} LIBDIR=%{_libdir}
+DESTDIR=%{buildroot} ninja -C builddiravx2 install
+DESTDIR=%{buildroot} ninja -C builddir install
+## install_append content
 popd
-%make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+## install_append end
 
 %files
 %defattr(-,root,root,-)
+/usr/lib64/haswell/pkgconfig/libzstd.pc
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/unzstd
-/usr/bin/haswell/zstd
-/usr/bin/haswell/zstdcat
-/usr/bin/haswell/zstdmt
 /usr/bin/unzstd
 /usr/bin/zstd
+/usr/bin/zstd-frugal
 /usr/bin/zstdcat
 /usr/bin/zstdgrep
 /usr/bin/zstdless
@@ -170,3 +172,4 @@ popd
 /usr/share/man/man1/zstdcat.1
 /usr/share/man/man1/zstdgrep.1
 /usr/share/man/man1/zstdless.1
+/usr/share/man/man1/zstdmt.1
