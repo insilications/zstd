@@ -4,7 +4,7 @@
 #
 Name     : zstd
 Version  : 1.4.0
-Release  : 41
+Release  : 42
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.0/zstd-1.4.0.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.0/zstd-1.4.0.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -46,6 +46,7 @@ Group: Development
 Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
+Requires: zstd = %{version}-%{release}
 Requires: zstd = %{version}-%{release}
 
 %description dev
@@ -89,7 +90,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555469750
+export SOURCE_DATE_EPOCH=1557584527
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -97,6 +98,14 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-m
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
+export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
+export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
+export CXXFLAGS_GENERATE="$CXXFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
+export CFLAGS_USE="$CFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
+export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
+export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
+export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 make PREFIX=%{_prefix} LIBDIR=%{_libdir}
 
 pushd ../buildavx2
@@ -107,7 +116,7 @@ make PREFIX=%{_prefix} LIBDIR=%{_libdir}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1555469750
+export SOURCE_DATE_EPOCH=1557584527
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp COPYING %{buildroot}/usr/share/package-licenses/zstd/COPYING
