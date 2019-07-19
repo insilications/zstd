@@ -5,6 +5,10 @@ libzstd.so.1:COVER_best_start
 libzstd.so.1:COVER_best_wait
 libzstd.so.1:COVER_checkTotalCompressedSize
 libzstd.so.1:COVER_computeEpochs
+libzstd.so.1:COVER_dictSelectionError
+libzstd.so.1:COVER_dictSelectionFree
+libzstd.so.1:COVER_dictSelectionIsError
+libzstd.so.1:COVER_selectDict
 libzstd.so.1:COVER_sum
 libzstd.so.1:COVER_warnOnSmallCorpus
 libzstd.so.1:ERR_getErrorString
