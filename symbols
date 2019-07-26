@@ -319,6 +319,7 @@ libzstd.so.1:ZSTD_XXH64_reset
 libzstd.so.1:ZSTD_XXH64_update
 libzstd.so.1:ZSTD_XXH_versionNumber
 libzstd.so.1:ZSTD_adjustCParams
+libzstd.so.1:ZSTD_buildCTable
 libzstd.so.1:ZSTD_buildFSETable
 libzstd.so.1:ZSTD_cParam_getBounds
 libzstd.so.1:ZSTD_calloc
@@ -362,6 +363,8 @@ libzstd.so.1:ZSTD_compressBound
 libzstd.so.1:ZSTD_compressCCtx
 libzstd.so.1:ZSTD_compressContinue
 libzstd.so.1:ZSTD_compressEnd
+libzstd.so.1:ZSTD_compressLiterals
+libzstd.so.1:ZSTD_compressRleLiteralsBlock
 libzstd.so.1:ZSTD_compressStream
 libzstd.so.1:ZSTD_compressStream2
 libzstd.so.1:ZSTD_compressStream2_simpleArgs
@@ -405,6 +408,7 @@ libzstd.so.1:ZSTD_decompressStream
 libzstd.so.1:ZSTD_decompressStream_simpleArgs
 libzstd.so.1:ZSTD_decompress_usingDDict
 libzstd.so.1:ZSTD_decompress_usingDict
+libzstd.so.1:ZSTD_encodeSequences
 libzstd.so.1:ZSTD_endStream
 libzstd.so.1:ZSTD_estimateCCtxSize
 libzstd.so.1:ZSTD_estimateCCtxSize_usingCCtxParams
@@ -483,11 +487,13 @@ libzstd.so.1:ZSTD_maxCLevel
 libzstd.so.1:ZSTD_minCLevel
 libzstd.so.1:ZSTD_nextInputType
 libzstd.so.1:ZSTD_nextSrcSizeToDecompress
+libzstd.so.1:ZSTD_noCompressLiterals
 libzstd.so.1:ZSTD_referenceExternalSequences
 libzstd.so.1:ZSTD_resetCStream
 libzstd.so.1:ZSTD_resetDStream
 libzstd.so.1:ZSTD_resetSeqStore
 libzstd.so.1:ZSTD_selectBlockCompressor
+libzstd.so.1:ZSTD_selectEncodingType
 libzstd.so.1:ZSTD_seqToCodes
 libzstd.so.1:ZSTD_sizeof_CCtx
 libzstd.so.1:ZSTD_sizeof_CDict
