@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : zstd
-Version  : 1.4.2
-Release  : 49
-URL      : https://github.com/facebook/zstd/releases/download/v1.4.2/zstd-1.4.2.tar.gz
-Source0  : https://github.com/facebook/zstd/releases/download/v1.4.2/zstd-1.4.2.tar.gz
+Version  : 1.4.3
+Release  : 50
+URL      : https://github.com/facebook/zstd/releases/download/v1.4.3/zstd-1.4.3.tar.gz
+Source0  : https://github.com/facebook/zstd/releases/download/v1.4.3/zstd-1.4.3.tar.gz
 Summary  : fast lossless compression algorithm library
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0
@@ -81,10 +81,10 @@ staticdev components for the zstd package.
 
 
 %prep
-%setup -q -n zstd-1.4.2
+%setup -q -n zstd-1.4.3
 %patch1 -p1
 pushd ..
-cp -a zstd-1.4.2 buildavx2
+cp -a zstd-1.4.3 buildavx2
 popd
 
 %build
@@ -95,7 +95,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1565045738
+export SOURCE_DATE_EPOCH=1567485605
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -112,9 +112,9 @@ export CFLAGS_USE="$CFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-co
 export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Ddefault_library=both  builddir
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
 ninja -v -C builddir
-CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --prefix /usr --libdir=/usr/lib64/haswell --buildtype=plain -Ddefault_library=both  builddiravx2
+CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --libdir=lib64/haswell --prefix=/usr --buildtype=plain -Ddefault_library=both  builddiravx2
 ninja -v -C builddiravx2
 
 %install
@@ -158,9 +158,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libzstd.so.1
-/usr/lib64/haswell/libzstd.so.1.4.2
+/usr/lib64/haswell/libzstd.so.1.4.3
 /usr/lib64/libzstd.so.1
-/usr/lib64/libzstd.so.1.4.2
+/usr/lib64/libzstd.so.1.4.3
 
 %files license
 %defattr(0644,root,root,0755)
