@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.4
-Release  : 53
+Release  : 54
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -18,12 +18,20 @@ Requires: zstd-man = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-meson
 BuildRequires : lz4-dev
+BuildRequires : util-linux
 BuildRequires : xz-dev
 BuildRequires : zlib-dev
 Patch1: multi-thread-default.patch
 
 %description
-<p align="center"><img src="https://raw.githubusercontent.com/facebook/zstd/dev/doc/images/zstd_logo86.png" alt="Zstandard"></p>
+# Parallel Zstandard (PZstandard)
+Parallel Zstandard is a Pigz-like tool for Zstandard.
+It provides Zstandard format compatible compression and decompression that is able to utilize multiple cores.
+It breaks the input up into equal sized chunks and compresses each chunk independently into a Zstandard frame.
+It then concatenates the frames together to produce the final compressed output.
+Pzstandard will write a 12 byte header for each frame that is a skippable frame in the Zstandard format, which tells PZstandard the size of the next compressed frame.
+PZstandard supports parallel decompression of files compressed with PZstandard.
+When decompressing files compressed with Zstandard, PZstandard does IO in one thread, and decompression in another.
 
 %package bin
 Summary: bin components for the zstd package.
@@ -40,6 +48,7 @@ Group: Development
 Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
+Requires: zstd = %{version}-%{release}
 Requires: zstd = %{version}-%{release}
 
 %description dev
@@ -75,6 +84,7 @@ man components for the zstd package.
 Summary: staticdev components for the zstd package.
 Group: Default
 Requires: zstd-dev = %{version}-%{release}
+Requires: zstd-dev = %{version}-%{release}
 
 %description staticdev
 staticdev components for the zstd package.
@@ -82,7 +92,6 @@ staticdev components for the zstd package.
 
 %prep
 %setup -q -n zstd-1.4.4
-cd %{_builddir}/zstd-1.4.4
 %patch1 -p1
 pushd ..
 cp -a zstd-1.4.4 buildavx2
@@ -96,7 +105,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572992294
+export SOURCE_DATE_EPOCH=1573048435
+# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -119,6 +129,8 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --
 ninja -v -C builddir
 CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --libdir=lib64/haswell --prefix=/usr --buildtype=plain -Ddefault_library=both  builddiravx2
 ninja -v -C builddiravx2
+CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --prefix /usr --libdir=/usr/lib64/haswell --buildtype=plain -Ddefault_library=both  builddiravx2
+ninja -v -C builddiravx2
 
 %install
 ## install_prepend content
@@ -131,6 +143,7 @@ mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp %{_builddir}/zstd-1.4.4/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
 cp %{_builddir}/zstd-1.4.4/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
 cp %{_builddir}/zstd-1.4.4/contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
+DESTDIR=%{buildroot} ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
 ## install_append content
