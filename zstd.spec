@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.4
-Release  : 54
+Release  : 55
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
 Summary  : fast lossless compression algorithm library
@@ -17,10 +17,18 @@ Requires: zstd-license = %{version}-%{release}
 Requires: zstd-man = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-meson
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : lz4-dev
+BuildRequires : lz4-dev32
 BuildRequires : util-linux
 BuildRequires : xz-dev
+BuildRequires : xz-dev32
 BuildRequires : zlib-dev
+BuildRequires : zlib-dev32
 Patch1: multi-thread-default.patch
 
 %description
@@ -55,6 +63,17 @@ Requires: zstd = %{version}-%{release}
 dev components for the zstd package.
 
 
+%package dev32
+Summary: dev32 components for the zstd package.
+Group: Default
+Requires: zstd-lib32 = %{version}-%{release}
+Requires: zstd-bin = %{version}-%{release}
+Requires: zstd-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the zstd package.
+
+
 %package lib
 Summary: lib components for the zstd package.
 Group: Libraries
@@ -62,6 +81,15 @@ Requires: zstd-license = %{version}-%{release}
 
 %description lib
 lib components for the zstd package.
+
+
+%package lib32
+Summary: lib32 components for the zstd package.
+Group: Default
+Requires: zstd-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the zstd package.
 
 
 %package license
@@ -90,9 +118,22 @@ Requires: zstd-dev = %{version}-%{release}
 staticdev components for the zstd package.
 
 
+%package staticdev32
+Summary: staticdev32 components for the zstd package.
+Group: Default
+Requires: zstd-dev = %{version}-%{release}
+
+%description staticdev32
+staticdev32 components for the zstd package.
+
+
 %prep
 %setup -q -n zstd-1.4.4
+cd %{_builddir}/zstd-1.4.4
 %patch1 -p1
+pushd ..
+cp -a zstd-1.4.4 build32
+popd
 pushd ..
 cp -a zstd-1.4.4 buildavx2
 popd
@@ -105,7 +146,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573048435
+export SOURCE_DATE_EPOCH=1579877781
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -129,8 +170,13 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --
 ninja -v -C builddir
 CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --libdir=lib64/haswell --prefix=/usr --buildtype=plain -Ddefault_library=both  builddiravx2
 ninja -v -C builddiravx2
-CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --prefix /usr --libdir=/usr/lib64/haswell --buildtype=plain -Ddefault_library=both  builddiravx2
-ninja -v -C builddiravx2
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir32
+ninja -v -C builddir32
 
 %install
 ## install_prepend content
@@ -143,7 +189,13 @@ mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp %{_builddir}/zstd-1.4.4/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
 cp %{_builddir}/zstd-1.4.4/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
 cp %{_builddir}/zstd-1.4.4/contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
-DESTDIR=%{buildroot} ninja -C builddiravx2 install
+DESTDIR=%{buildroot} ninja -C builddir32 install
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
 DESTDIR=%{buildroot} ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
 ## install_append content
@@ -174,12 +226,23 @@ popd
 /usr/lib64/libzstd.so
 /usr/lib64/pkgconfig/libzstd.pc
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libzstd.so
+/usr/lib32/pkgconfig/32libzstd.pc
+/usr/lib32/pkgconfig/libzstd.pc
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libzstd.so.1
 /usr/lib64/haswell/libzstd.so.1.4.4
 /usr/lib64/libzstd.so.1
 /usr/lib64/libzstd.so.1.4.4
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libzstd.so.1
+/usr/lib32/libzstd.so.1.4.4
 
 %files license
 %defattr(0644,root,root,0755)
@@ -199,3 +262,7 @@ popd
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libzstd.a
 /usr/lib64/libzstd.a
+
+%files staticdev32
+%defattr(-,root,root,-)
+/usr/lib32/libzstd.a

@@ -3,3 +3,6 @@
 zlib-dev
 xz-dev
 lz4-dev
+zlib-dev32
+xz-dev32
+lz4-dev32
