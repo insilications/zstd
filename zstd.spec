@@ -5,10 +5,10 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.4
-Release  : 56
+Release  : 57
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
-Summary  : fast lossless compression algorithm library
+Summary  : Fast lossless compression algorithm library and tools
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0
 Requires: zstd-bin = %{version}-%{release}
@@ -32,14 +32,12 @@ BuildRequires : zlib-dev32
 Patch1: multi-thread-default.patch
 
 %description
-# Parallel Zstandard (PZstandard)
-Parallel Zstandard is a Pigz-like tool for Zstandard.
-It provides Zstandard format compatible compression and decompression that is able to utilize multiple cores.
-It breaks the input up into equal sized chunks and compresses each chunk independently into a Zstandard frame.
-It then concatenates the frames together to produce the final compressed output.
-Pzstandard will write a 12 byte header for each frame that is a skippable frame in the Zstandard format, which tells PZstandard the size of the next compressed frame.
-PZstandard supports parallel decompression of files compressed with PZstandard.
-When decompressing files compressed with Zstandard, PZstandard does IO in one thread, and decompression in another.
+Zstandard, or zstd as short version, is a fast lossless compression algorithm,
+targeting real-time compression scenarios at zlib-level and better compression
+ratios. It's backed by a very fast entropy stage, provided by Huff0 and FSE
+library. The project is provided as an open-source dual BSD and GPLv2 licensed
+C library, and a command line utility producing and decoding .zst, .gz, .xz and
+.lz4 files.
 
 %package bin
 Summary: bin components for the zstd package.
@@ -56,7 +54,6 @@ Group: Development
 Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
-Requires: zstd = %{version}-%{release}
 Requires: zstd = %{version}-%{release}
 
 %description dev
@@ -112,7 +109,6 @@ man components for the zstd package.
 Summary: staticdev components for the zstd package.
 Group: Default
 Requires: zstd-dev = %{version}-%{release}
-Requires: zstd-dev = %{version}-%{release}
 
 %description staticdev
 staticdev components for the zstd package.
@@ -139,15 +135,11 @@ cp -a zstd-1.4.4 buildavx2
 popd
 
 %build
-## build_prepend content
-pushd build/meson
-## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1579877781
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1580439887
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -166,41 +158,40 @@ export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-
 export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
 export LDFLAGS_USE="$LDFLAGS -fprofile-use -fprofile-dir=/var/tmp/pgo -fprofile-correction "
+pushd build/meson
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
 ninja -v -C builddir
 CFLAGS="$CFLAGS -m64 -march=haswell" CXXFLAGS="$CXXFLAGS -m64 -march=haswell " LDFLAGS="$LDFLAGS -m64 -march=haswell" meson --libdir=lib64/haswell --prefix=/usr --buildtype=plain -Ddefault_library=both  builddiravx2
 ninja -v -C builddiravx2
+popd
+pushd ../build32/build/meson
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir32
-ninja -v -C builddir32
+meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
+ninja -v -C builddir
+popd
 
 %install
-## install_prepend content
-pushd build/meson
-cp ../../COPYING .
-cp ../../LICENSE .
-cp -a ../../contrib .
-## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
 cp %{_builddir}/zstd-1.4.4/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
 cp %{_builddir}/zstd-1.4.4/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
 cp %{_builddir}/zstd-1.4.4/contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
-DESTDIR=%{buildroot} ninja -C builddir32 install
+pushd ../build32/build/meson
+DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+popd
+pushd build/meson
 DESTDIR=%{buildroot} ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
-## install_append content
 popd
-## install_append end
 
 %files
 %defattr(-,root,root,-)
