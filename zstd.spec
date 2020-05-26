@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : zstd
-Version  : 1.4.4
-Release  : 59
-URL      : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
-Source0  : https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
+Version  : 1.4.5
+Release  : 60
+URL      : https://github.com/facebook/zstd/releases/download/v1.4.5/zstd-1.4.5.tar.gz
+Source0  : https://github.com/facebook/zstd/releases/download/v1.4.5/zstd-1.4.5.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0
@@ -24,7 +24,6 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : lz4-dev
 BuildRequires : lz4-dev32
-BuildRequires : util-linux
 BuildRequires : xz-dev
 BuildRequires : xz-dev32
 BuildRequires : zlib-dev
@@ -124,14 +123,14 @@ staticdev32 components for the zstd package.
 
 
 %prep
-%setup -q -n zstd-1.4.4
-cd %{_builddir}/zstd-1.4.4
+%setup -q -n zstd-1.4.5
+cd %{_builddir}/zstd-1.4.5
 %patch1 -p1
 pushd ..
-cp -a zstd-1.4.4 build32
+cp -a zstd-1.4.5 build32
 popd
 pushd ..
-cp -a zstd-1.4.4 buildavx2
+cp -a zstd-1.4.5 buildavx2
 popd
 
 %build
@@ -139,14 +138,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1580439887
+export SOURCE_DATE_EPOCH=1590526199
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
@@ -176,9 +175,9 @@ popd
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
-cp %{_builddir}/zstd-1.4.4/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
-cp %{_builddir}/zstd-1.4.4/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
-cp %{_builddir}/zstd-1.4.4/contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
+cp %{_builddir}/zstd-1.4.5/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
+cp %{_builddir}/zstd-1.4.5/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
+cp %{_builddir}/zstd-1.4.5/contrib/linux-kernel/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
 pushd ../build32/build/meson
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -226,14 +225,14 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libzstd.so.1
-/usr/lib64/haswell/libzstd.so.1.4.4
+/usr/lib64/haswell/libzstd.so.1.4.5
 /usr/lib64/libzstd.so.1
-/usr/lib64/libzstd.so.1.4.4
+/usr/lib64/libzstd.so.1.4.5
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libzstd.so.1
-/usr/lib32/libzstd.so.1.4.4
+/usr/lib32/libzstd.so.1.4.5
 
 %files license
 %defattr(0644,root,root,0755)

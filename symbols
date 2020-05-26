@@ -116,6 +116,7 @@ libzstd.so.1:HUF_decompress4X_hufOnly_wksp
 libzstd.so.1:HUF_decompress4X_hufOnly_wksp_bmi2
 libzstd.so.1:HUF_decompress4X_usingDTable
 libzstd.so.1:HUF_decompress4X_usingDTable_bmi2
+libzstd.so.1:HUF_estimateCompressedSize
 libzstd.so.1:HUF_getErrorName
 libzstd.so.1:HUF_getNbBits
 libzstd.so.1:HUF_isError
@@ -127,6 +128,7 @@ libzstd.so.1:HUF_readDTableX2
 libzstd.so.1:HUF_readDTableX2_wksp
 libzstd.so.1:HUF_readStats
 libzstd.so.1:HUF_selectDecoder
+libzstd.so.1:HUF_validateCTable
 libzstd.so.1:HUF_writeCTable
 libzstd.so.1:HUFv05_decompress
 libzstd.so.1:HUFv05_decompress1X2
@@ -234,6 +236,7 @@ libzstd.so.1:ZBUFFv07_recommendedDInSize
 libzstd.so.1:ZBUFFv07_recommendedDOutSize
 libzstd.so.1:ZDICT_addEntropyTablesFromBuffer
 libzstd.so.1:ZDICT_finalizeDictionary
+libzstd.so.1:ZDICT_getDictHeaderSize
 libzstd.so.1:ZDICT_getDictID
 libzstd.so.1:ZDICT_getErrorName
 libzstd.so.1:ZDICT_isError
@@ -368,6 +371,7 @@ libzstd.so.1:ZSTD_compressRleLiteralsBlock
 libzstd.so.1:ZSTD_compressStream
 libzstd.so.1:ZSTD_compressStream2
 libzstd.so.1:ZSTD_compressStream2_simpleArgs
+libzstd.so.1:ZSTD_compressSuperBlock
 libzstd.so.1:ZSTD_compress_advanced
 libzstd.so.1:ZSTD_compress_advanced_internal
 libzstd.so.1:ZSTD_compress_usingCDict
@@ -391,6 +395,8 @@ libzstd.so.1:ZSTD_createDDict_advanced
 libzstd.so.1:ZSTD_createDDict_byReference
 libzstd.so.1:ZSTD_createDStream
 libzstd.so.1:ZSTD_createDStream_advanced
+libzstd.so.1:ZSTD_crossEntropyCost
+libzstd.so.1:ZSTD_cycleLog
 libzstd.so.1:ZSTD_dParam_getBounds
 libzstd.so.1:ZSTD_decodeLiteralsBlock
 libzstd.so.1:ZSTD_decodeSeqHeaders
@@ -436,6 +442,7 @@ libzstd.so.1:ZSTD_freeCStream
 libzstd.so.1:ZSTD_freeDCtx
 libzstd.so.1:ZSTD_freeDDict
 libzstd.so.1:ZSTD_freeDStream
+libzstd.so.1:ZSTD_fseBitCost
 libzstd.so.1:ZSTD_getBlockSize
 libzstd.so.1:ZSTD_getCParams
 libzstd.so.1:ZSTD_getCParamsFromCCtxParams
@@ -478,10 +485,12 @@ libzstd.so.1:ZSTD_isError
 libzstd.so.1:ZSTD_isFrame
 libzstd.so.1:ZSTD_ldm_adjustParameters
 libzstd.so.1:ZSTD_ldm_blockCompress
+libzstd.so.1:ZSTD_ldm_fillHashTable
 libzstd.so.1:ZSTD_ldm_generateSequences
 libzstd.so.1:ZSTD_ldm_getMaxNbSeq
 libzstd.so.1:ZSTD_ldm_getTableSize
 libzstd.so.1:ZSTD_ldm_skipSequences
+libzstd.so.1:ZSTD_loadCEntropy
 libzstd.so.1:ZSTD_loadDEntropy
 libzstd.so.1:ZSTD_malloc
 libzstd.so.1:ZSTD_maxCLevel
@@ -493,6 +502,7 @@ libzstd.so.1:ZSTD_referenceExternalSequences
 libzstd.so.1:ZSTD_resetCStream
 libzstd.so.1:ZSTD_resetDStream
 libzstd.so.1:ZSTD_resetSeqStore
+libzstd.so.1:ZSTD_reset_compressedBlockState
 libzstd.so.1:ZSTD_selectBlockCompressor
 libzstd.so.1:ZSTD_selectEncodingType
 libzstd.so.1:ZSTD_seqToCodes
