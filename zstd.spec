@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.5
-Release  : 61
+Release  : 62
 URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -125,7 +125,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602085437
+export SOURCE_DATE_EPOCH=1602088255
 export GCC_IGNORE_WERROR=1
 ## altflags_pgo content
 ## pgo generate
@@ -168,7 +168,7 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
-meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both -Dbin_programs=true builddir
+meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
 ninja -v -C builddir
 
 cat */*/*.c */* | builddir/programs/zstd -9 | builddir/programs/zstd -d > /dev/null
@@ -180,7 +180,7 @@ export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
-meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both -Dbin_programs=true builddir
+meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
 ninja -v -C builddir
 popd
 pushd ../build32/build/meson
