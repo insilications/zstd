@@ -20,6 +20,7 @@ libzstd.so.1:FSE_buildCTable_wksp
 libzstd.so.1:FSE_buildDTable
 libzstd.so.1:FSE_buildDTable_raw
 libzstd.so.1:FSE_buildDTable_rle
+libzstd.so.1:FSE_buildDTable_wksp
 libzstd.so.1:FSE_compress
 libzstd.so.1:FSE_compress2
 libzstd.so.1:FSE_compressBound
@@ -30,6 +31,7 @@ libzstd.so.1:FSE_createDTable
 libzstd.so.1:FSE_decompress
 libzstd.so.1:FSE_decompress_usingDTable
 libzstd.so.1:FSE_decompress_wksp
+libzstd.so.1:FSE_decompress_wksp_bmi2
 libzstd.so.1:FSE_freeCTable
 libzstd.so.1:FSE_freeDTable
 libzstd.so.1:FSE_getErrorName
@@ -38,6 +40,7 @@ libzstd.so.1:FSE_normalizeCount
 libzstd.so.1:FSE_optimalTableLog
 libzstd.so.1:FSE_optimalTableLog_internal
 libzstd.so.1:FSE_readNCount
+libzstd.so.1:FSE_readNCount_bmi2
 libzstd.so.1:FSE_versionNumber
 libzstd.so.1:FSE_writeNCount
 libzstd.so.1:FSEv05_buildDTable
@@ -124,9 +127,11 @@ libzstd.so.1:HUF_optimalTableLog
 libzstd.so.1:HUF_readCTable
 libzstd.so.1:HUF_readDTableX1
 libzstd.so.1:HUF_readDTableX1_wksp
+libzstd.so.1:HUF_readDTableX1_wksp_bmi2
 libzstd.so.1:HUF_readDTableX2
 libzstd.so.1:HUF_readDTableX2_wksp
 libzstd.so.1:HUF_readStats
+libzstd.so.1:HUF_readStats_wksp
 libzstd.so.1:HUF_selectDecoder
 libzstd.so.1:HUF_validateCTable
 libzstd.so.1:HUF_writeCTable
@@ -288,6 +293,7 @@ libzstd.so.1:ZSTD_CCtx_setParametersUsingCCtxParams
 libzstd.so.1:ZSTD_CCtx_setPledgedSrcSize
 libzstd.so.1:ZSTD_CStreamInSize
 libzstd.so.1:ZSTD_CStreamOutSize
+libzstd.so.1:ZSTD_DCtx_getParameter
 libzstd.so.1:ZSTD_DCtx_loadDictionary
 libzstd.so.1:ZSTD_DCtx_loadDictionary_advanced
 libzstd.so.1:ZSTD_DCtx_loadDictionary_byReference
@@ -325,7 +331,6 @@ libzstd.so.1:ZSTD_adjustCParams
 libzstd.so.1:ZSTD_buildCTable
 libzstd.so.1:ZSTD_buildFSETable
 libzstd.so.1:ZSTD_cParam_getBounds
-libzstd.so.1:ZSTD_calloc
 libzstd.so.1:ZSTD_checkCParams
 libzstd.so.1:ZSTD_checkContinuity
 libzstd.so.1:ZSTD_compress
@@ -354,12 +359,15 @@ libzstd.so.1:ZSTD_compressBlock_fast
 libzstd.so.1:ZSTD_compressBlock_fast_dictMatchState
 libzstd.so.1:ZSTD_compressBlock_fast_extDict
 libzstd.so.1:ZSTD_compressBlock_greedy
+libzstd.so.1:ZSTD_compressBlock_greedy_dedicatedDictSearch
 libzstd.so.1:ZSTD_compressBlock_greedy_dictMatchState
 libzstd.so.1:ZSTD_compressBlock_greedy_extDict
 libzstd.so.1:ZSTD_compressBlock_lazy
 libzstd.so.1:ZSTD_compressBlock_lazy2
+libzstd.so.1:ZSTD_compressBlock_lazy2_dedicatedDictSearch
 libzstd.so.1:ZSTD_compressBlock_lazy2_dictMatchState
 libzstd.so.1:ZSTD_compressBlock_lazy2_extDict
+libzstd.so.1:ZSTD_compressBlock_lazy_dedicatedDictSearch
 libzstd.so.1:ZSTD_compressBlock_lazy_dictMatchState
 libzstd.so.1:ZSTD_compressBlock_lazy_extDict
 libzstd.so.1:ZSTD_compressBound
@@ -385,6 +393,7 @@ libzstd.so.1:ZSTD_createCCtxParams
 libzstd.so.1:ZSTD_createCCtx_advanced
 libzstd.so.1:ZSTD_createCDict
 libzstd.so.1:ZSTD_createCDict_advanced
+libzstd.so.1:ZSTD_createCDict_advanced2
 libzstd.so.1:ZSTD_createCDict_byReference
 libzstd.so.1:ZSTD_createCStream
 libzstd.so.1:ZSTD_createCStream_advanced
@@ -396,6 +405,9 @@ libzstd.so.1:ZSTD_createDDict_byReference
 libzstd.so.1:ZSTD_createDStream
 libzstd.so.1:ZSTD_createDStream_advanced
 libzstd.so.1:ZSTD_crossEntropyCost
+libzstd.so.1:ZSTD_customCalloc
+libzstd.so.1:ZSTD_customFree
+libzstd.so.1:ZSTD_customMalloc
 libzstd.so.1:ZSTD_cycleLog
 libzstd.so.1:ZSTD_dParam_getBounds
 libzstd.so.1:ZSTD_decodeLiteralsBlock
@@ -414,6 +426,7 @@ libzstd.so.1:ZSTD_decompressStream
 libzstd.so.1:ZSTD_decompressStream_simpleArgs
 libzstd.so.1:ZSTD_decompress_usingDDict
 libzstd.so.1:ZSTD_decompress_usingDict
+libzstd.so.1:ZSTD_dedicatedDictSearch_lazy_loadDictionary
 libzstd.so.1:ZSTD_encodeSequences
 libzstd.so.1:ZSTD_endStream
 libzstd.so.1:ZSTD_estimateCCtxSize
@@ -434,7 +447,6 @@ libzstd.so.1:ZSTD_findDecompressedSize
 libzstd.so.1:ZSTD_findFrameCompressedSize
 libzstd.so.1:ZSTD_flushStream
 libzstd.so.1:ZSTD_frameHeaderSize
-libzstd.so.1:ZSTD_free
 libzstd.so.1:ZSTD_freeCCtx
 libzstd.so.1:ZSTD_freeCCtxParams
 libzstd.so.1:ZSTD_freeCDict
@@ -492,7 +504,6 @@ libzstd.so.1:ZSTD_ldm_getTableSize
 libzstd.so.1:ZSTD_ldm_skipSequences
 libzstd.so.1:ZSTD_loadCEntropy
 libzstd.so.1:ZSTD_loadDEntropy
-libzstd.so.1:ZSTD_malloc
 libzstd.so.1:ZSTD_maxCLevel
 libzstd.so.1:ZSTD_minCLevel
 libzstd.so.1:ZSTD_nextInputType
