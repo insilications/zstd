@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.5
-Release  : 62
+Release  : 63
 URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -19,6 +19,7 @@ BuildRequires : buildreq-meson
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : lz4-dev
@@ -115,9 +116,6 @@ staticdev32 components for the zstd package.
 %prep
 %setup -q -n zstd
 cd %{_builddir}/zstd
-pushd ..
-cp -a zstd build32
-popd
 
 %build
 unset http_proxy
@@ -125,7 +123,10 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602088255
+export SOURCE_DATE_EPOCH=1602092669
+pushd build/cmake
+mkdir -p clr-build
+pushd clr-build
 export GCC_IGNORE_WERROR=1
 ## altflags_pgo content
 ## pgo generate
@@ -162,28 +163,28 @@ export MAKEFLAGS=%{?_smp_mflags}
 ##
 %define _lto_cflags 1
 ##
-pushd build/meson
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
-meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
-ninja -v -C builddir
+%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=ON
+make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
 
-cat */*/*.c */* | builddir/programs/zstd -9 | builddir/programs/zstd -d > /dev/null
-cat */*/*.c */* | builddir/programs/zstd -1 | builddir/programs/zstd -d > /dev/null
-cat */*/*.c */* | builddir/programs/zstd -19 | builddir/programs/zstd -d > /dev/null
-find builddir/ -type f,l -not -name '*.gcno' -delete -print
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -9 | programs/zstd -v -d > /dev/null" \;
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -1 | programs/zstd -v -d > /dev/null" \;
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -19 | programs/zstd -v -d > /dev/null" \;
+find . -type f,l -not -name '*.gcno' -delete -print
 export CFLAGS="${CFLAGS_USE}"
 export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
-meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
-ninja -v -C builddir
+%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=ON
+make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
 popd
-pushd ../build32/build/meson
+mkdir -p clr-build32
+pushd clr-build32
 export CFLAGS="-g -O2 -fuse-linker-plugin -pipe"
 export CXXFLAGS="-g -O2 -fuse-linker-plugin -fvisibility-inlines-hidden -pipe"
 export LDFLAGS="-g -O2 -fuse-linker-plugin -pipe"
@@ -196,13 +197,18 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault_library=both  builddir
-ninja -v -C builddir
+%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=OFF -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=OFF
+make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
+unset PKG_CONFIG_PATH
+popd
 popd
 
 %install
-pushd ../build32/build/meson
-DESTDIR=%{buildroot} ninja -C builddir install
+export SOURCE_DATE_EPOCH=1602092669
+rm -rf %{buildroot}
+pushd build/cmake
+pushd clr-build32
+%make_install32 PREFIX=%{_prefix} LIBDIR=%{_libdir}
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
@@ -210,8 +216,9 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-pushd build/meson
-DESTDIR=%{buildroot} ninja -C builddir install
+pushd clr-build
+%make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+popd
 popd
 
 %files
@@ -221,7 +228,6 @@ popd
 %defattr(-,root,root,-)
 /usr/bin/unzstd
 /usr/bin/zstd
-/usr/bin/zstd-frugal
 /usr/bin/zstdcat
 /usr/bin/zstdgrep
 /usr/bin/zstdless
@@ -232,11 +238,19 @@ popd
 /usr/include/zdict.h
 /usr/include/zstd.h
 /usr/include/zstd_errors.h
+/usr/lib64/cmake/zstd/zstdConfig.cmake
+/usr/lib64/cmake/zstd/zstdConfigVersion.cmake
+/usr/lib64/cmake/zstd/zstdTargets-relwithdebinfo.cmake
+/usr/lib64/cmake/zstd/zstdTargets.cmake
 /usr/lib64/libzstd.so
 /usr/lib64/pkgconfig/libzstd.pc
 
 %files dev32
 %defattr(-,root,root,-)
+/usr/lib32/cmake/zstd/zstdConfig.cmake
+/usr/lib32/cmake/zstd/zstdConfigVersion.cmake
+/usr/lib32/cmake/zstd/zstdTargets-relwithdebinfo.cmake
+/usr/lib32/cmake/zstd/zstdTargets.cmake
 /usr/lib32/libzstd.so
 /usr/lib32/pkgconfig/32libzstd.pc
 /usr/lib32/pkgconfig/libzstd.pc
@@ -258,7 +272,6 @@ popd
 /usr/share/man/man1/zstdcat.1
 /usr/share/man/man1/zstdgrep.1
 /usr/share/man/man1/zstdless.1
-/usr/share/man/man1/zstdmt.1
 
 %files staticdev
 %defattr(-,root,root,-)
