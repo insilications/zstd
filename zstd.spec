@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.5
-Release  : 63
+Release  : 64
 URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -25,6 +25,9 @@ BuildRequires : glibc-libc32
 BuildRequires : lz4-dev
 BuildRequires : lz4-dev32
 BuildRequires : lz4-staticdev
+BuildRequires : pkgconfig(liblz4)
+BuildRequires : pkgconfig(liblzma)
+BuildRequires : pkgconfig(zlib)
 BuildRequires : xz-dev
 BuildRequires : xz-dev32
 BuildRequires : xz-staticdev
@@ -123,7 +126,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602092669
+export SOURCE_DATE_EPOCH=1602095122
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -159,6 +162,10 @@ export MAKEFLAGS=%{?_smp_mflags}
 # export CCACHE_DIRECT=1
 # export CCACHE_SLOPPINESS=pch_defines,locale,time_macros
 # export CCACHE_DISABLE=1
+export FUZZER_FLAGS="--no-big-tests"
+export FUZZERTEST="-T30s"
+export ZSTREAM_TESTTIME="-T30s"
+export DECODECORPUS_TESTTIME="-T30s"
 ## altflags_pgo end
 ##
 %define _lto_cflags 1
@@ -168,19 +175,20 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
-%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=ON
+%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DBUILD_TESTING=ON -DZSTD_BUILD_TESTS=ON -DZSTD_MULTITHREAD_SUPPORT=ON -DFUZZER_FLAGS="--no-big-tests" -DFUZZERTEST="-T30s" -DZSTREAM_TESTTIME="-T30s" -DDECODECORPUS_TESTTIME="-T30s" -DZSTD_ZLIB_SUPPORT=ON -DZSTD_LZMA_SUPPORT=ON -DZSTD_LZ4_SUPPORT=ON
 make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
 
 find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -9 | programs/zstd -v -d > /dev/null" \;
 find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -1 | programs/zstd -v -d > /dev/null" \;
 find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -19 | programs/zstd -v -d > /dev/null" \;
+ctest -j1 -V --progress || :
 find . -type f,l -not -name '*.gcno' -delete -print
 export CFLAGS="${CFLAGS_USE}"
 export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
-%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=ON
+%cmake ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DBUILD_TESTING=ON -DZSTD_BUILD_TESTS=ON -DZSTD_MULTITHREAD_SUPPORT=ON -DFUZZER_FLAGS="--no-big-tests" -DFUZZERTEST="-T30s" -DZSTREAM_TESTTIME="-T30s" -DDECODECORPUS_TESTTIME="-T30s" -DZSTD_ZLIB_SUPPORT=ON -DZSTD_LZMA_SUPPORT=ON -DZSTD_LZ4_SUPPORT=ON
 make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
 popd
 mkdir -p clr-build32
@@ -204,7 +212,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1602092669
+export SOURCE_DATE_EPOCH=1602095122
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32

@@ -28,3 +28,7 @@ export MAKEFLAGS=%{?_smp_mflags}
 # export CCACHE_DIRECT=1
 # export CCACHE_SLOPPINESS=pch_defines,locale,time_macros
 # export CCACHE_DISABLE=1
+export FUZZER_FLAGS="--no-big-tests"
+export FUZZERTEST="-T30s"
+export ZSTREAM_TESTTIME="-T30s"
+export DECODECORPUS_TESTTIME="-T30s"
