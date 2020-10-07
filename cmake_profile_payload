@@ -1,0 +1,3 @@
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -9 | programs/zstd -v -d > /dev/null" \;
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -1 | programs/zstd -v -d > /dev/null" \;
+find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -19 | programs/zstd -v -d > /dev/null" \;
