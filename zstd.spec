@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : zstd
-Version  : 1.4.7
-Release  : 61
-URL      : https://github.com/facebook/zstd/releases/download/v1.4.7/zstd-1.4.7.tar.gz
-Source0  : https://github.com/facebook/zstd/releases/download/v1.4.7/zstd-1.4.7.tar.gz
+Version  : 1.4.8
+Release  : 62
+URL      : https://github.com/facebook/zstd/releases/download/v1.4.8/zstd-1.4.8.tar.gz
+Source0  : https://github.com/facebook/zstd/releases/download/v1.4.8/zstd-1.4.8.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0
@@ -123,14 +123,14 @@ staticdev32 components for the zstd package.
 
 
 %prep
-%setup -q -n zstd-1.4.7
-cd %{_builddir}/zstd-1.4.7
+%setup -q -n zstd-1.4.8
+cd %{_builddir}/zstd-1.4.8
 %patch1 -p1
 pushd ..
-cp -a zstd-1.4.7 build32
+cp -a zstd-1.4.8 build32
 popd
 pushd ..
-cp -a zstd-1.4.7 buildavx2
+cp -a zstd-1.4.8 buildavx2
 popd
 
 %build
@@ -138,7 +138,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1608220025
+export SOURCE_DATE_EPOCH=1608587759
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -175,8 +175,8 @@ popd
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/zstd
-cp %{_builddir}/zstd-1.4.7/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
-cp %{_builddir}/zstd-1.4.7/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
+cp %{_builddir}/zstd-1.4.8/COPYING %{buildroot}/usr/share/package-licenses/zstd/1d8c93712cbc9117a9e55a7ff86cebd066c8bfd8
+cp %{_builddir}/zstd-1.4.8/LICENSE %{buildroot}/usr/share/package-licenses/zstd/c4130945ca3d1f8ea4a3e8af36d3c18b2232116c
 pushd ../build32/build/meson
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -223,14 +223,14 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libzstd.so.1
-/usr/lib64/haswell/libzstd.so.1.4.7
+/usr/lib64/haswell/libzstd.so.1.4.8
 /usr/lib64/libzstd.so.1
-/usr/lib64/libzstd.so.1.4.7
+/usr/lib64/libzstd.so.1.4.8
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libzstd.so.1
-/usr/lib32/libzstd.so.1.4.7
+/usr/lib32/libzstd.so.1.4.8
 
 %files license
 %defattr(0644,root,root,0755)
