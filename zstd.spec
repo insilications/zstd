@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : zstd
-Version  : 1.4.5
-Release  : 65
-URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
-Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.5.tar.gz
+Version  : 1.4.8
+Release  : 66
+URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
+Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
 Group    : Development/Tools
 License  : GPL-2.0+
@@ -58,6 +58,8 @@ Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
 Requires: zstd = %{version}-%{release}
+Requires: zstd-dev = %{version}-%{release}
+Requires: zstd-dev32 = %{version}-%{release}
 
 %description dev
 dev components for the zstd package.
@@ -69,6 +71,7 @@ Group: Default
 Requires: zstd-lib32 = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Requires: zstd-dev = %{version}-%{release}
+Requires: zstd-dev32 = %{version}-%{release}
 
 %description dev32
 dev32 components for the zstd package.
@@ -102,6 +105,7 @@ man components for the zstd package.
 Summary: staticdev components for the zstd package.
 Group: Default
 Requires: zstd-dev = %{version}-%{release}
+Requires: zstd-dev32 = %{version}-%{release}
 
 %description staticdev
 staticdev components for the zstd package.
@@ -110,7 +114,7 @@ staticdev components for the zstd package.
 %package staticdev32
 Summary: staticdev32 components for the zstd package.
 Group: Default
-Requires: zstd-dev = %{version}-%{release}
+Requires: zstd-dev32 = %{version}-%{release}
 
 %description staticdev32
 staticdev32 components for the zstd package.
@@ -126,7 +130,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602097307
+export SOURCE_DATE_EPOCH=1610598435
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -154,8 +158,8 @@ export NM=gcc-nm
 #
 export MAKEFLAGS=%{?_smp_mflags}
 #
-%define _lto_cflags 1
-#%define _lto_cflags %{nil}
+%global _lto_cflags 1
+#global _lto_cflags %{nil}
 #
 # export PATH="/usr/lib64/ccache/bin:$PATH"
 # export CCACHE_NOHASHDIR=1
@@ -167,9 +171,6 @@ export FUZZERTEST="-T30s"
 export ZSTREAM_TESTTIME="-T30s"
 export DECODECORPUS_TESTTIME="-T30s"
 ## altflags_pgo end
-##
-%define _lto_cflags 1
-##
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
@@ -193,9 +194,9 @@ make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,
 popd
 mkdir -p clr-build32
 pushd clr-build32
-export CFLAGS="-g -O2 -fuse-linker-plugin -pipe"
-export CXXFLAGS="-g -O2 -fuse-linker-plugin -fvisibility-inlines-hidden -pipe"
-export LDFLAGS="-g -O2 -fuse-linker-plugin -pipe"
+export CFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export CXXFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -fvisibility-inlines-hidden -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export LDFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -206,13 +207,13 @@ export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 ..   -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=OFF -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=OFF
-make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive"
+make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1
 unset PKG_CONFIG_PATH
 popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1602097307
+export SOURCE_DATE_EPOCH=1610598435
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
@@ -266,12 +267,12 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libzstd.so.1
-/usr/lib64/libzstd.so.1.4.6
+/usr/lib64/libzstd.so.1.4.8
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libzstd.so.1
-/usr/lib32/libzstd.so.1.4.6
+/usr/lib32/libzstd.so.1.4.8
 
 %files man
 %defattr(0644,root,root,0755)
