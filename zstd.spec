@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.8
-Release  : 66
+Release  : 67
 URL      : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
 Source0  : file:///insilications/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -58,8 +58,6 @@ Requires: zstd-lib = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Provides: zstd-devel = %{version}-%{release}
 Requires: zstd = %{version}-%{release}
-Requires: zstd-dev = %{version}-%{release}
-Requires: zstd-dev32 = %{version}-%{release}
 
 %description dev
 dev components for the zstd package.
@@ -71,7 +69,6 @@ Group: Default
 Requires: zstd-lib32 = %{version}-%{release}
 Requires: zstd-bin = %{version}-%{release}
 Requires: zstd-dev = %{version}-%{release}
-Requires: zstd-dev32 = %{version}-%{release}
 
 %description dev32
 dev32 components for the zstd package.
@@ -105,7 +102,6 @@ man components for the zstd package.
 Summary: staticdev components for the zstd package.
 Group: Default
 Requires: zstd-dev = %{version}-%{release}
-Requires: zstd-dev32 = %{version}-%{release}
 
 %description staticdev
 staticdev components for the zstd package.
@@ -130,7 +126,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1610598435
+export SOURCE_DATE_EPOCH=1612042366
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -152,9 +148,9 @@ export FCFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall
 export FFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC $PGO_USE"
 export CXXFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -fvisibility-inlines-hidden -pipe -ffat-lto-objects -fPIC $PGO_USE"
 export LDFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive $PGO_USE"
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
+export AR=/usr/bin/gcc-ar
+export RANLIB=/usr/bin/gcc-ranlib
+export NM=/usr/bin/gcc-nm
 #
 export MAKEFLAGS=%{?_smp_mflags}
 #
@@ -213,7 +209,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1610598435
+export SOURCE_DATE_EPOCH=1612042366
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
