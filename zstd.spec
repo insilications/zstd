@@ -126,7 +126,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1612048275
+export SOURCE_DATE_EPOCH=1612069839
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -209,7 +209,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1612048275
+export SOURCE_DATE_EPOCH=1612069839
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
@@ -245,8 +245,10 @@ popd
 /usr/include/zstd_errors.h
 /usr/lib64/cmake/zstd/zstdConfig.cmake
 /usr/lib64/cmake/zstd/zstdConfigVersion.cmake
-/usr/lib64/cmake/zstd/zstdTargets-release.cmake
-/usr/lib64/cmake/zstd/zstdTargets.cmake
+/usr/lib64/cmake/zstd/zstdTargetsShared-release.cmake
+/usr/lib64/cmake/zstd/zstdTargetsShared.cmake
+/usr/lib64/cmake/zstd/zstdTargetsStatic-release.cmake
+/usr/lib64/cmake/zstd/zstdTargetsStatic.cmake
 /usr/lib64/libzstd.so
 /usr/lib64/pkgconfig/libzstd.pc
 
@@ -254,8 +256,10 @@ popd
 %defattr(-,root,root,-)
 /usr/lib32/cmake/zstd/zstdConfig.cmake
 /usr/lib32/cmake/zstd/zstdConfigVersion.cmake
-/usr/lib32/cmake/zstd/zstdTargets-release.cmake
-/usr/lib32/cmake/zstd/zstdTargets.cmake
+/usr/lib32/cmake/zstd/zstdTargetsShared-release.cmake
+/usr/lib32/cmake/zstd/zstdTargetsShared.cmake
+/usr/lib32/cmake/zstd/zstdTargetsStatic-release.cmake
+/usr/lib32/cmake/zstd/zstdTargetsStatic.cmake
 /usr/lib32/libzstd.so
 /usr/lib32/pkgconfig/32libzstd.pc
 /usr/lib32/pkgconfig/libzstd.pc
