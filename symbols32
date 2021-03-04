@@ -251,7 +251,6 @@ libzstd.so.1:ZDICT_trainFromBuffer
 libzstd.so.1:ZDICT_trainFromBuffer_cover
 libzstd.so.1:ZDICT_trainFromBuffer_fastCover
 libzstd.so.1:ZDICT_trainFromBuffer_legacy
-libzstd.so.1:ZDICT_trainFromBuffer_unsafe_legacy
 libzstd.so.1:ZSTDMT_compressStream_generic
 libzstd.so.1:ZSTDMT_createCCtx_advanced
 libzstd.so.1:ZSTDMT_freeCCtx
@@ -278,6 +277,7 @@ libzstd.so.1:ZSTD_CCtx_reset
 libzstd.so.1:ZSTD_CCtx_setParameter
 libzstd.so.1:ZSTD_CCtx_setParametersUsingCCtxParams
 libzstd.so.1:ZSTD_CCtx_setPledgedSrcSize
+libzstd.so.1:ZSTD_CCtx_trace
 libzstd.so.1:ZSTD_CStreamInSize
 libzstd.so.1:ZSTD_CStreamOutSize
 libzstd.so.1:ZSTD_DCtx_getParameter
@@ -521,6 +521,7 @@ libzstd.so.1:ZSTD_updateTree
 libzstd.so.1:ZSTD_versionNumber
 libzstd.so.1:ZSTD_versionString
 libzstd.so.1:ZSTD_writeLastEmptyBlock
+libzstd.so.1:ZSTD_writeSkippableFrame
 libzstd.so.1:ZSTDv05_copyDCtx
 libzstd.so.1:ZSTDv05_createDCtx
 libzstd.so.1:ZSTDv05_decompress
