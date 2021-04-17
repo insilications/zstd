@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.8
-Release  : 67
+Release  : 70
 URL      : file:///aot/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/zstd/zstd-1.4.8.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -167,7 +167,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1618656954
+export SOURCE_DATE_EPOCH=1618657512
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -263,7 +263,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1618656954
+export SOURCE_DATE_EPOCH=1618657512
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
