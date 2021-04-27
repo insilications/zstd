@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.4.9
-Release  : 63
+Release  : 64
 URL      : https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.gz
 Source0  : https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
