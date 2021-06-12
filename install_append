@@ -1,2 +1,5 @@
 install -dm 0755 %{buildroot}/usr/lib64/haswell/
 cp --archive %{buildroot}/usr/lib64/libzstd.so* %{buildroot}/usr/lib64/haswell/
+pushd %{buildroot}/usr/lib64/
+for i in *.a; do ln -sf /usr/lib64/$i %{buildroot}/usr/lib64/haswell/$i; done;
+popd

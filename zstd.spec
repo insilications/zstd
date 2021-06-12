@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.5.0.99
-Release  : 75
+Release  : 76
 URL      : file:///aot/build/clearlinux/packages/zstd/zstd-v1.5.0.99.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/zstd/zstd-v1.5.0.99.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -165,7 +165,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622246651
+export SOURCE_DATE_EPOCH=1623512284
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -261,7 +261,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1622246651
+export SOURCE_DATE_EPOCH=1623512284
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
@@ -280,6 +280,9 @@ popd
 ## install_append content
 install -dm 0755 %{buildroot}/usr/lib64/haswell/
 cp --archive %{buildroot}/usr/lib64/libzstd.so* %{buildroot}/usr/lib64/haswell/
+pushd %{buildroot}/usr/lib64/
+for i in *.a; do ln -sf /usr/lib64/$i %{buildroot}/usr/lib64/haswell/$i; done;
+popd
 ## install_append end
 
 %files
@@ -343,6 +346,7 @@ cp --archive %{buildroot}/usr/lib64/libzstd.so* %{buildroot}/usr/lib64/haswell/
 
 %files staticdev
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libzstd.a
 /usr/lib64/libzstd.a
 
 %files staticdev32

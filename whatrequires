@@ -1,1 +1,18 @@
 # This file contains recursive sources that require this package
+buildreq-kernel
+createrepo_c-dev
+dpdk-dev
+dpdk-staticdev
+elfutils-dev
+elfutils-dev32
+elfutils-staticdev
+elfutils-staticdev32
+libbpf-dev
+libdnf-dev
+libmodulemd-dev
+librdkafka-dev
+rpm-dev
+zstd-dev
+zstd-dev32
+zstd-staticdev
+zstd-staticdev32
