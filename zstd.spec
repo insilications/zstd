@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : zstd
 Version  : 1.5.0.99
-Release  : 76
+Release  : 77
 URL      : file:///aot/build/clearlinux/packages/zstd/zstd-v1.5.0.99.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/zstd/zstd-v1.5.0.99.tar.gz
 Summary  : Fast lossless compression algorithm library and tools
@@ -165,7 +165,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1623512284
+export SOURCE_DATE_EPOCH=1624187375
 pushd build/cmake
 mkdir -p clr-build
 pushd clr-build
@@ -220,7 +220,7 @@ export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
 %cmake ..   -DCMAKE_BUILD_TYPE=Release -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DBUILD_TESTING=ON -DZSTD_BUILD_TESTS=ON -DZSTD_MULTITHREAD_SUPPORT=ON -DFUZZER_FLAGS="--no-big-tests" -DFUZZERTEST="-T30s" -DZSTREAM_TESTTIME="-T30s" -DDECODECORPUS_TESTTIME="-T30s" -DZSTD_ZLIB_SUPPORT=ON -DZSTD_LZMA_SUPPORT=ON -DZSTD_LZ4_SUPPORT=ON
-make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive" V=1 VERBOSE=1
+make  %{?_smp_mflags}  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive" V=1 VERBOSE=1
 
 find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -9 | programs/zstd -v -d > /dev/null" \;
 find ../../../ -name '*.c' -exec sh -c "cat {} | programs/zstd -v -1 | programs/zstd -v -d > /dev/null" \;
@@ -237,7 +237,7 @@ export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
 %cmake ..   -DCMAKE_BUILD_TYPE=Release -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=ON -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DBUILD_TESTING=ON -DZSTD_BUILD_TESTS=ON -DZSTD_MULTITHREAD_SUPPORT=ON -DFUZZER_FLAGS="--no-big-tests" -DFUZZERTEST="-T30s" -DZSTREAM_TESTTIME="-T30s" -DDECODECORPUS_TESTTIME="-T30s" -DZSTD_ZLIB_SUPPORT=ON -DZSTD_LZMA_SUPPORT=ON -DZSTD_LZ4_SUPPORT=ON
-make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive" V=1 VERBOSE=1
+make  %{?_smp_mflags}  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1 LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libz.a /usr/lib64/liblzma.a /usr/lib64/liblz4.a -pthread -ldl -lm -lmvec -Wl,--no-whole-archive" V=1 VERBOSE=1
 fi
 popd
 mkdir -p clr-build32
@@ -255,13 +255,13 @@ export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 ..   -DCMAKE_BUILD_TYPE=Release -DZSTD_PROGRAMS_LINK_SHARED=OFF -DZSTD_BUILD_PROGRAMS=OFF -DZSTD_BUILD_STATIC=ON -DZSTD_BUILD_SHARED=ON -DZSTD_BUILD_TESTS=OFF
-make  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1  V=1 VERBOSE=1
+make  %{?_smp_mflags}  PREFIX=%{_prefix} LIBDIR=%{_libdir} V=1 VERBOSE=1  V=1 VERBOSE=1
 unset PKG_CONFIG_PATH
 popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1623512284
+export SOURCE_DATE_EPOCH=1624187375
 rm -rf %{buildroot}
 pushd build/cmake
 pushd clr-build32
